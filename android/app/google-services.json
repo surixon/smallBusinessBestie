@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "655745959926",
+    "project_id": "small-business-bestie-5b2b1",
+    "storage_bucket": "small-business-bestie-5b2b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655745959926:android:2c215a946aadc3011f69d7",
+        "android_client_info": {
+          "package_name": "com.hpsolver.smalll_business_bestie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHaeMvGif-ecMAD7yQdtxdPvE6wMvJ_Lg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
