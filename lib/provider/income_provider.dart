@@ -1,10 +1,22 @@
-import 'package:smalll_business_bestie/enums/viewstate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smalll_business_bestie/provider/base_provider.dart';
 
 import '../globals.dart';
 import '../models/income_model.dart';
 
 class IncomeProvider extends BaseProvider {
+
+
+  List<DocumentSnapshot> incomeDocuments = [];
+
+  String _searchText = '';
+
+  String get searchText => _searchText;
+
+  set searchText(String value) {
+    _searchText = value;
+    notifyListeners();
+  }
   double totalIncome = 0;
 
   bool _isLoader = false;

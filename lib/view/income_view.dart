@@ -24,6 +24,7 @@ class IncomeView extends StatelessWidget {
           await provider.getTotalIncome();
         },
         builder: (context, provider, _) => Scaffold(
+          resizeToAvoidBottomInset: false,
               appBar: CommonFunction.appBarWithButtons('income'.tr(), context,
                   showAdd: true, onAddPress: () {
                 context.pushNamed(AppPaths.addIncome).then((value) async {
@@ -36,66 +37,114 @@ class IncomeView extends StatelessWidget {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : StreamBuilder<QuerySnapshot>(
-                      stream: Globals.incomeReference
-                          .where('userId', isEqualTo: Globals.firebaseUser?.uid)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const SizedBox.shrink();
-                        }
-
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (snapshot.data!.size == 0) {
-                          return Center(
-                            child: Text(
-                              'no_data_yet'.tr(),
-                              style: ViewDecoration.textStyleMediumPoppins(
-                                  kBlackColor, 15.sp),
-                            ),
-                          );
-                        }
-
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 12.h,
-                              ),
-                              Text(
-                                '${NumberFormat.currency(symbol: NumberFormat.simpleCurrency().simpleCurrencySymbol('USD')).format(provider.totalIncome)} ',
-                                style: ViewDecoration.textStyleBoldPoppins(
-                                    kOrangeColor, 25.sp),
-                              ),
-                              ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 24.w, vertical: 12.h),
-                                  itemBuilder: (context, index) {
-                                    IncomeModel incomeModel =
-                                        IncomeModel.fromSnapshot(
-                                            snapshot.data?.docs[index].data()
-                                                as Map<String, dynamic>);
-                                    return _itemBuilder(
-                                        context, index, incomeModel);
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(
-                                      height: 24.h,
-                                    );
-                                  },
-                                  itemCount: snapshot.data?.docs.length ?? 0),
-                            ],
+                  : Padding(
+                      padding:
+                          EdgeInsets.only(left: 24.w, right: 24.w, top: 18.h),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            textInputAction: TextInputAction.search,
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.words,
+                            onChanged: (value) {
+                              provider.searchText = value;
+                            },
+                            style: ViewDecoration.textStyleMediumPoppins(
+                                kBlackColor, 16.sp),
+                            decoration: ViewDecoration.textFiledDecoration(
+                                hintText: "Search by title...",
+                                fillColor: kWhiteColor),
                           ),
-                        );
-                      }),
+                          SizedBox(
+                            height: 12.h,
+                          ),
+                          Text(
+                            '${NumberFormat.currency(symbol: NumberFormat.simpleCurrency().simpleCurrencySymbol('USD')).format(provider.totalIncome)} ',
+                            style:
+                            ViewDecoration.textStyleBoldPoppins(
+                                kOrangeColor, 25.sp),
+                          ),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Expanded(
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: Globals.incomeReference
+                                    .where('userId',
+                                        isEqualTo: Globals.firebaseUser?.uid)
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const SizedBox.shrink();
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+
+                                  if (snapshot.data!.size == 0) {
+                                    return Center(
+                                      child: Text(
+                                        'no_data_yet'.tr(),
+                                        style: ViewDecoration
+                                            .textStyleMediumPoppins(
+                                                kBlackColor, 15.sp),
+                                      ),
+                                    );
+                                  }
+
+                                  provider.incomeDocuments.clear();
+
+                                  provider.incomeDocuments
+                                      .addAll(snapshot.data!.docs);
+
+                                  if (provider.searchText.isNotEmpty) {
+                                    provider.incomeDocuments = provider
+                                        .incomeDocuments
+                                        .where((element) {
+                                      return (element
+                                          .get('title')
+                                          .toString()
+                                          .toLowerCase()
+                                          .contains(provider.searchText
+                                              .toLowerCase()));
+                                    }).toList();
+                                  }
+
+                                  return ListView.separated(
+                                      shrinkWrap: true,
+
+                                      padding:
+                                          EdgeInsets.only(bottom: 18.h),
+                                      itemBuilder: (context, index) {
+                                        IncomeModel incomeModel =
+                                            IncomeModel.fromSnapshot(
+                                                provider.incomeDocuments[
+                                                            index]
+                                                        .data()
+                                                    as Map<String,
+                                                        dynamic>);
+
+                                        incomeModel.docId = provider
+                                            .incomeDocuments[index].id;
+                                        return _itemBuilder(
+                                            context, index, incomeModel);
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return SizedBox(
+                                          height: 24.h,
+                                        );
+                                      },
+                                      itemCount:
+                                          provider.incomeDocuments.length);
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
             ));
   }
 

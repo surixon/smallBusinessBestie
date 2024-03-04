@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExpensesModel {
+  String? docId;
   String? userId;
   Timestamp? date;
   String? title;

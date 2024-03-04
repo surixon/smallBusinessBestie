@@ -14,7 +14,6 @@ import 'package:smalll_business_bestie/provider/loading_provider.dart';
 import 'package:smalll_business_bestie/provider/theme_provider.dart';
 import 'package:smalll_business_bestie/routes.dart';
 import 'package:smalll_business_bestie/theme/theme_color.dart';
-import 'package:smalll_business_bestie/widgets/loading_widget.dart';
 
 import 'constants/dimensions_constants.dart';
 import 'constants/string_constants.dart';
@@ -70,7 +69,6 @@ class MyApp extends StatelessWidget {
         builder: (context, child) => MaterialApp.router(
             builder: (c, widget) {
               widget = FToastBuilder()(c, widget!);
-              widget = LoadingScreen.init()(c, widget);
               return widget;
             },
             debugShowCheckedModeBanner: false,

@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
   String? userId;
+  String? docId;
   String? name;
-  String? cost;
-  String? minQty;
-  String? qtyInStock;
-  String? inSoldValue;
-  String? stockValue;
+  String? wholesalePrice;
+  String? salePrice;
+  String? retailPrice;
   Timestamp? createdAt;
 
   ProductModel();
@@ -16,11 +15,9 @@ class ProductModel {
     var data = <String, dynamic>{};
     data["userId"] = user.userId;
     data["name"] = user.name;
-    data["cost"] = user.cost;
-    data["minQty"] = user.minQty;
-    data["qtyInStock"] = user.qtyInStock;
-    data["inSoldValue"] = user.inSoldValue;
-    data["stockValue"] = user.stockValue;
+    data["wholesalePrice"] = user.wholesalePrice;
+    data["salePrice"] = user.salePrice;
+    data["retailPrice"] = user.retailPrice;
     data["createdAt"] = user.createdAt;
     return data;
   }
@@ -28,11 +25,9 @@ class ProductModel {
   ProductModel.fromSnapshot(Map<String, dynamic> data) {
     userId = data["userId"];
     name = data["name"];
-    cost = data["cost"];
-    minQty = data["minQty"];
-    qtyInStock = data["qtyInStock"];
-    inSoldValue = data["inSoldValue"];
-    stockValue = data["stockValue"];
+    wholesalePrice = data["wholesalePrice"];
+    salePrice = data["salePrice"];
+    retailPrice = data["retailPrice"];
     createdAt = data["createdAt"];
   }
 }

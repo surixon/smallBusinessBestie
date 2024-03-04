@@ -27,16 +27,16 @@ class DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return BaseView<DashboardProvider>(
         onModelReady: (provider) async {},
-        builder: (context, provider, _) => PopScope(
-              canPop: false,
-              onPopInvoked: (value) {
+        builder: (context, provider, _) => WillPopScope(
+              onWillPop: () async {
                 if (provider.selectedIndex != 0) {
-                  provider.setHome(context, provider);
+                  return await provider.setHome(context, provider);
                 } else {
-                  showExitPopup(context);
+                  return showExitPopup(context);
                 }
               },
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 backgroundColor: kBgColor,
                 body: provider.widgetList.elementAt(provider.selectedIndex),
                 bottomNavigationBar: BottomNavigationBar(
@@ -45,7 +45,6 @@ class DashboardViewState extends State<DashboardView> {
                   type: BottomNavigationBarType.fixed,
                   unselectedLabelStyle:
                       ViewDecoration.textStyleMedium(kWhiteColor, 8.sp),
-
                   selectedLabelStyle:
                       ViewDecoration.textStyleMedium(kYellowColor, 10.sp),
                   selectedItemColor: kYellowColor,
@@ -67,7 +66,7 @@ class DashboardViewState extends State<DashboardView> {
                           width: 20.w,
                           height: 20.w,
                         ),
-                        label: 'materials'.tr()),
+                        label: 'inventory'.tr()),
                     BottomNavigationBarItem(
                         activeIcon: ImageView(
                           path: products,
@@ -84,7 +83,6 @@ class DashboardViewState extends State<DashboardView> {
                     BottomNavigationBarItem(
                         activeIcon: ImageView(
                           path: incomeSelected,
-
                           width: 20.w,
                           height: 20.w,
                         ),
@@ -97,7 +95,6 @@ class DashboardViewState extends State<DashboardView> {
                     BottomNavigationBarItem(
                         activeIcon: ImageView(
                           path: expensesSelected,
-
                           width: 20.w,
                           height: 20.w,
                         ),

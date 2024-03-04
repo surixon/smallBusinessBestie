@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smalll_business_bestie/models/material_model.dart';
 import 'package:smalll_business_bestie/view/add_expenses_view.dart';
 import 'package:smalll_business_bestie/view/add_income_view.dart';
-import 'package:smalll_business_bestie/view/add_material_view.dart';
+import 'package:smalll_business_bestie/view/add_inventory_view.dart';
 import 'package:smalll_business_bestie/view/add_product_view.dart';
 import 'package:smalll_business_bestie/view/create_account_view.dart';
 import 'package:smalll_business_bestie/view/dashboard_view.dart';
 import 'package:smalll_business_bestie/view/forgot_password_view.dart';
 import 'package:smalll_business_bestie/view/login_view.dart';
+import 'package:smalll_business_bestie/view/inventory_view.dart';
+import 'package:smalll_business_bestie/view/settings_view.dart';
 import 'package:smalll_business_bestie/view/splash_view.dart';
 import 'globals.dart';
 import 'helpers/shared_pref.dart';
@@ -56,25 +59,49 @@ final router = GoRouter(
       path: AppPaths.addMaterial,
       name: AppPaths.addMaterial,
       pageBuilder: (context, state) {
-        return const MaterialPage(child: AddMaterialView());
+        return MaterialPage(
+            child: AddInventoryView(
+          materialModel: state.extra as MaterialModel?,
+        ));
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: AppPaths.addProduct,
       name: AppPaths.addProduct,
       pageBuilder: (context, state) {
         return const MaterialPage(child: AddProductView());
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: AppPaths.addIncome,
       name: AppPaths.addIncome,
       pageBuilder: (context, state) {
         return const MaterialPage(child: AddIncomeView());
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: AppPaths.addExpense,
       name: AppPaths.addExpense,
       pageBuilder: (context, state) {
         return const MaterialPage(child: AddExpensesView());
+      },
+    ),
+    GoRoute(
+      path: AppPaths.settings,
+      name: AppPaths.settings,
+      pageBuilder: (context, state) {
+        return MaterialPage(child: SettingsView());
+      },
+    ),
+    GoRoute(
+      path: AppPaths.material,
+      name: AppPaths.material,
+      pageBuilder: (context, state) {
+        var data = state.extra as Map<String, dynamic>;
+        return MaterialPage(
+            child: InventoryView(
+          from: data['from'],
+        ));
       },
     ),
   ],
@@ -100,7 +127,9 @@ class AppPaths {
   static const createAccount = '/createAccount';
   static const dashboard = '/dashboard';
   static const addMaterial = '/addMaterial';
+  static const material = '/material';
   static const addProduct = '/addProduct';
   static const addIncome = '/addIncome';
   static const addExpense = '/addExpense';
+  static const settings = '/settings';
 }

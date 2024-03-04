@@ -65,8 +65,6 @@ class CreateAccountProvider extends BaseProvider {
   Future<void> addUserToDB(String? uid, String fcmToken) async {
     userModel.userId = uid;
     userModel.fcmToken = fcmToken;
-    userModel.isProfileCompleted = false;
-    userModel.subscription=false;
     userModel.createdAt = Timestamp.now();
     await Globals.userReference.doc(uid).set(userModel.toMap(userModel));
   }

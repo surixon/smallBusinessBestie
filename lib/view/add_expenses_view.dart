@@ -166,7 +166,7 @@ class AddExpensesViewState extends State<AddExpensesView> {
                 TextFormField(
                   controller: _totalController,
                   textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'required'.tr();

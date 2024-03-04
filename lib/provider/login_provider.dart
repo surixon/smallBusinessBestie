@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../enums/viewstate.dart';
@@ -9,6 +12,7 @@ import '../helpers/dialog_helper.dart';
 import '../helpers/shared_pref.dart';
 import '../models/user_model.dart';
 import '../routes.dart';
+import '../view/account_reinstate_view.dart';
 import 'base_provider.dart';
 
 class LoginProvider extends BaseProvider {
@@ -57,13 +61,21 @@ class LoginProvider extends BaseProvider {
       if (value.exists) {
         Map<String, dynamic>? data = value.data();
         var user = UserModel.fromSnapshot(data!);
-        debugPrint("isCompleted ${user.isProfileCompleted}");
-        await updateFcmToken(userId, fcmToken).then((value) {
-          SharedPref.prefs?.setBool(SharedPref.isLoggedIn, true);
-          context.go(AppPaths.dashboard);
-        });
 
-        setState(ViewState.idle);
+        if (user.isDeleted != null && user.isDeleted!) {
+          setState(ViewState.idle);
+          showDialog(
+              context: Globals.navigatorKey.currentContext!,
+              builder: (_) => BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                    child: AccountReInstateView(user, fcmToken),
+                  ));
+        } else {
+          await updateFcmToken(userId, fcmToken).then((value) {
+            SharedPref.prefs?.setBool(SharedPref.isLoggedIn, true);
+            context.go(AppPaths.dashboard);
+          });
+        }
       }
     });
   }
@@ -71,5 +83,6 @@ class LoginProvider extends BaseProvider {
   Future<void> updateFcmToken(String? userId, String? fcmToken) async {
     Map<String, dynamic> data = {'fcmToken': fcmToken};
     await Globals.userReference.doc(userId).update(data);
+    setState(ViewState.idle);
   }
 }

@@ -65,8 +65,10 @@ class CommonFunction {
     BuildContext context, {
     bool showBack = false,
     bool showAdd = false,
+    bool showSetting = false,
     VoidCallback? onBackPress,
     VoidCallback? onAddPress,
+    VoidCallback? onSettingPress,
   }) {
     return AppBar(
       elevation: 1,
@@ -98,6 +100,16 @@ class CommonFunction {
                   child:  ImageView(path: addIcon,width: 32.w,height: 32.w,),
                 ),
             )
+            : const SizedBox(),
+
+        showSetting
+            ? GestureDetector(
+          onTap: onSettingPress,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+            child:  Icon(Icons.settings,size: 32.w,),
+          ),
+        )
             : const SizedBox()
       ],
     );

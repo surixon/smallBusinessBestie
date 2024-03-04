@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:smalll_business_bestie/provider/account_reinstate_provider.dart';
 import 'package:smalll_business_bestie/provider/add_expenses_provider.dart';
 import 'package:smalll_business_bestie/provider/add_income_provider.dart';
 import 'package:smalll_business_bestie/provider/add_material_provider.dart';
@@ -10,6 +11,9 @@ import 'package:smalll_business_bestie/provider/forgot_password_provider.dart';
 import 'package:smalll_business_bestie/provider/home_provider.dart';
 import 'package:smalll_business_bestie/provider/income_provider.dart';
 import 'package:smalll_business_bestie/provider/login_provider.dart';
+import 'package:smalll_business_bestie/provider/material_view_provider.dart';
+import 'package:smalll_business_bestie/provider/products_view_provider.dart';
+import 'package:smalll_business_bestie/provider/settings_provider.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -25,4 +29,8 @@ void setupLocator() {
   locator.registerFactory(() => HomeProvider());
   locator.registerFactory(() => IncomeProvider());
   locator.registerFactory(() => ExpensesProvider());
+  locator.registerFactory(() => MaterialViewProvider());
+  locator.registerFactory(() => ProductsViewProvider());
+  locator.registerFactory(() => SettingsProvider());
+  locator.registerFactory(() => AccountReInStateProvider());
 }

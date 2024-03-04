@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAZylTmFtZHCWRp3LYbtgEO9Om0z8lqUMA</string>
+	<string>AIzaSyDQyEU7aJUKL_P2Ab9n6fo-8pOWfZ3NkCI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>655745959926</string>
+	<string>704528776001</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.hpsolver.smalllBusinessBestie</string>
+	<string>com.smallbusinessbestie.app</string>
 	<key>PROJECT_ID</key>
-	<string>small-business-bestie-5b2b1</string>
+	<string>small-business-bestie-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>small-business-bestie-5b2b1.appspot.com</string>
+	<string>small-business-bestie-app.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:655745959926:ios:e2091490601f5e601f69d7</string>
+	<string>1:704528776001:ios:29d7d46c788447e1f63fc0</string>
 </dict>
 </plist>

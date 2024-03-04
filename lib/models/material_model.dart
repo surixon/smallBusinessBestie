@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MaterialModel {
+  String? docId;
   String? userId;
   String? name;
   String? cost;
@@ -8,6 +9,11 @@ class MaterialModel {
   String? qtyInStock;
   String? inSoldValue;
   String? stockValue;
+  String? stockStatusString;
+  int? stockStatus;
+  String? howManyUnit;
+  String? totalCost;
+  double? inSoldQty;
   Timestamp? createdAt;
 
   MaterialModel();
@@ -21,6 +27,9 @@ class MaterialModel {
     data["qtyInStock"] = user.qtyInStock;
     data["inSoldValue"] = user.inSoldValue;
     data["stockValue"] = user.stockValue;
+    data["stockStatusString"] = user.stockStatusString;
+    data["stockStatus"] = user.stockStatus;
+    data["inSoldQty"] = user.inSoldQty;
     data["createdAt"] = user.createdAt;
     return data;
   }
@@ -33,6 +42,9 @@ class MaterialModel {
     qtyInStock = data["qtyInStock"];
     inSoldValue = data["inSoldValue"];
     stockValue = data["stockValue"];
+    stockStatusString = data["stockStatusString"];
+    stockStatus = data["stockStatus"];
+    inSoldQty = data["inSoldQty"];
     createdAt = data["createdAt"];
   }
 }

@@ -2,6 +2,7 @@ const appName = "Small Business Bestie";
 const inter = "Inter";
 const poppins = "Poppins";
 const privacyUrl =
-    'https://docs.google.com/document/';
+    'https://jamelapayne.com/privacy-policy';
 const termOfUseUrl =
-    'https://docs.google.com/document/';
+    'https://jamelapayne.com/privacy-policy';
+const currencyConverterUrl ='https://www.oanda.com/currency-converter/en/?from=GBP&to=USD&amount=1';

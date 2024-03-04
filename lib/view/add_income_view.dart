@@ -138,13 +138,6 @@ class AddIncomeViewState extends State<AddIncomeView> {
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.sentences,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'required'.tr();
-                    } else {
-                      return null;
-                    }
-                  },
                   style:
                   ViewDecoration.textStyleMediumPoppins(kBlackColor, 16.sp),
                   decoration: ViewDecoration.textFiledDecoration(
@@ -169,14 +162,7 @@ class AddIncomeViewState extends State<AddIncomeView> {
                 TextFormField(
                   controller: _taxController,
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'required'.tr();
-                    } else {
-                      return null;
-                    }
-                  },
+                  keyboardType:const TextInputType.numberWithOptions(decimal: true),
                   style:
                   ViewDecoration.textStyleMediumPoppins(kBlackColor, 16.sp),
                   decoration: ViewDecoration.textFiledDecoration(
@@ -202,7 +188,7 @@ class AddIncomeViewState extends State<AddIncomeView> {
                 TextFormField(
                   controller: _netIncomeController,
                   textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'required'.tr();

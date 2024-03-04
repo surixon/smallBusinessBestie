@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smalll_business_bestie/models/material_model.dart';
 import 'package:smalll_business_bestie/provider/add_material_provider.dart';
 import 'package:smalll_business_bestie/view/base_view.dart';
 import '../constants/colors_constants.dart';
@@ -12,27 +13,27 @@ import '../helpers/decoration.dart';
 import '../helpers/keyboard_helper.dart';
 import '../widgets/primary_button.dart';
 
-class AddMaterialView extends StatefulWidget {
-  const AddMaterialView({super.key});
+class AddInventoryView extends StatefulWidget {
+  final MaterialModel? materialModel;
+
+  const AddInventoryView({super.key, this.materialModel});
 
   @override
-  AddMaterialViewState createState() => AddMaterialViewState();
+  AddInventoryViewState createState() => AddInventoryViewState();
 }
 
-class AddMaterialViewState extends State<AddMaterialView> {
-  final _nameController = TextEditingController();
-  final _costController = TextEditingController();
-  final _minQuantityController = TextEditingController();
-  final _quantityInStockController = TextEditingController();
-  final _inSoldController = TextEditingController();
-  final _stockValueController = TextEditingController();
+class AddInventoryViewState extends State<AddInventoryView> {
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<AddMaterialProvider>(builder: (context, provider, _) {
+    return BaseView<AddMaterialProvider>(
+      onModelReady: (provider){
+        provider.setData(widget.materialModel);
+      },
+        builder: (context, provider, _) {
       return Scaffold(
-        appBar: CommonFunction.appBarWithButtons('add_material'.tr(), context,
+        appBar: CommonFunction.appBarWithButtons( widget.materialModel==null?'add_inventory'.tr():"Update Inventory", context,
             showBack: true, onBackPress: () {
           context.pop();
         }),
@@ -57,7 +58,7 @@ class AddMaterialViewState extends State<AddMaterialView> {
                   height: 8.h,
                 ),
                 TextFormField(
-                  controller: _nameController,
+                  controller: provider.nameController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
@@ -90,15 +91,19 @@ class AddMaterialViewState extends State<AddMaterialView> {
                   height: 8.h,
                 ),
                 TextFormField(
-                  controller: _costController,
+                  controller: provider.costController,
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'required'.tr();
                     } else {
                       return null;
                     }
+                  },
+                  onChanged: (value) {
+                    provider.getStockStatus();
+                    provider.getStockValue();
                   },
                   style:
                       ViewDecoration.textStyleMediumPoppins(kBlackColor, 16.sp),
@@ -122,9 +127,13 @@ class AddMaterialViewState extends State<AddMaterialView> {
                   height: 8.h,
                 ),
                 TextFormField(
-                  controller: _minQuantityController,
+                  controller: provider.minQuantityController,
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (value) {
+                    provider.getStockStatus();
+                    provider.getStockValue();
+                  },
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'required'.tr();
@@ -154,9 +163,13 @@ class AddMaterialViewState extends State<AddMaterialView> {
                   height: 8.h,
                 ),
                 TextFormField(
-                  controller: _quantityInStockController,
+                  controller: provider.quantityInStockController,
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (value) {
+                    provider.getStockStatus();
+                    provider.getStockValue();
+                  },
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'required'.tr();
@@ -187,16 +200,10 @@ class AddMaterialViewState extends State<AddMaterialView> {
                   height: 8.h,
                 ),
                 TextFormField(
-                  controller: _inSoldController,
+                  controller: TextEditingController(text: provider.inSold),
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'required'.tr();
-                    } else {
-                      return null;
-                    }
-                  },
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  readOnly: true,
                   style:
                       ViewDecoration.textStyleMediumPoppins(kBlackColor, 16.sp),
                   decoration: ViewDecoration.textFiledDecoration(
@@ -219,9 +226,10 @@ class AddMaterialViewState extends State<AddMaterialView> {
                   height: 8.h,
                 ),
                 TextFormField(
-                  controller: _stockValueController,
+                  controller: TextEditingController(text: provider.stockValue),
                   textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  readOnly: true,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'required'.tr();
@@ -235,6 +243,40 @@ class AddMaterialViewState extends State<AddMaterialView> {
                       hintText: 'stock_value'.tr(), fillColor: kWhiteColor),
                 ),
                 SizedBox(
+                  height: 16.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Text(
+                    'stock_status'.tr(),
+                    style: ViewDecoration.textStyleSemiBoldPoppins(
+                      Theme.of(context).primaryColor,
+                      20.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.h,
+                ),
+                TextFormField(
+                  controller:
+                      TextEditingController(text: provider.stockStatusString),
+                  textInputAction: TextInputAction.done,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  readOnly: true,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'required'.tr();
+                    } else {
+                      return null;
+                    }
+                  },
+                  style:
+                      ViewDecoration.textStyleMediumPoppins(kBlackColor, 16.sp),
+                  decoration: ViewDecoration.textFiledDecoration(
+                      hintText: 'stock_status'.tr(), fillColor: kWhiteColor),
+                ),
+                SizedBox(
                   height: 32.h,
                 ),
                 provider.state == ViewState.busy
@@ -244,20 +286,12 @@ class AddMaterialViewState extends State<AddMaterialView> {
                     : PrimaryButton(
                         width: MediaQuery.of(context).size.width,
                         height: 52.h,
-                        title: 'add_material'.tr(),
+                        title: widget.materialModel==null? 'add_inventory'.tr():"Update Inventory",
                         radius: 20.r,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             KeyboardHelper.hideKeyboard(context);
-                            provider.addMaterial(
-                              context,
-                              _nameController.text.trim(),
-                              _costController.text.trim(),
-                              _minQuantityController.text.trim(),
-                              _quantityInStockController.text.trim(),
-                              _inSoldController.text.trim(),
-                              _stockValueController.text.trim(),
-                            );
+                            provider.addMaterial(context);
                           }
                         },
                       ),

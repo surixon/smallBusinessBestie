@@ -13,7 +13,8 @@ class ViewDecoration {
       alignLabelWithHint: true,
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       hintText: hintText,
-      hintStyle: ViewDecoration.textStyleMediumPoppins(kGreyColor.withOpacity(.7), 16.sp),
+      hintStyle: ViewDecoration.textStyleMediumPoppins(
+          kGreyColor.withOpacity(.7), 16.sp),
       border: outlineInputBorder(),
       focusedBorder: outlineInputBorder(),
       enabledBorder: outlineInputBorder(),
@@ -22,6 +23,28 @@ class ViewDecoration {
       suffixIcon: suffixIcon != null ? buildCustomPrefixIcon(suffixIcon) : null,
       fillColor: fillColor,
       disabledBorder: outlineInputBorder(),
+    );
+  }
+
+  static InputDecoration textFiledDecorationWithoutBorder(
+      {String? hintText, Color? fillColor, String? suffixIcon}) {
+    return InputDecoration(
+      counterText: null,
+      errorMaxLines: 2,
+      isDense: true,
+      alignLabelWithHint: true,
+      contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+      hintText: hintText,
+      hintStyle: ViewDecoration.textStyleMediumPoppins(
+          kGreyColor.withOpacity(.7), 16.sp),
+      border: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      errorBorder: InputBorder.none,
+      filled: true,
+      suffixIcon: suffixIcon != null ? buildCustomPrefixIcon(suffixIcon) : null,
+      fillColor: fillColor,
+      disabledBorder: InputBorder.none,
     );
   }
 
@@ -36,7 +59,8 @@ class ViewDecoration {
       errorMaxLines: 2,
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       hintText: hintText,
-      hintStyle: ViewDecoration.textStyleMediumPoppins(kGreyColor.withOpacity(.7), 16.sp),
+      hintStyle: ViewDecoration.textStyleMediumPoppins(
+          kGreyColor.withOpacity(.7), 16.sp),
       border: outlineInputBorder(),
       focusedBorder: outlineInputBorder(),
       enabledBorder: outlineInputBorder(),

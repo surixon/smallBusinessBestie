@@ -50,15 +50,15 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAHaeMvGif-ecMAD7yQdtxdPvE6wMvJ_Lg',
-    appId: '1:655745959926:android:2c215a946aadc3011f69d7',
-    messagingSenderId: '655745959926',
-    projectId: 'small-business-bestie-5b2b1',
+    apiKey: 'AIzaSyBSNtQD2B2nWugiQtbx9b3OSvmqmckq5hw',
+    appId: '1:704528776001:android:b05b9f82b2a0cb64f63fc0',
+    messagingSenderId: '704528776001',
+    projectId: 'small-business-bestie-app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-      apiKey: 'AIzaSyAHaeMvGif-ecMAD7yQdtxdPvE6wMvJ_Lg',
-      appId: '1:655745959926:ios:e2091490601f5e601f69d7',
-      messagingSenderId: '655745959926',
-      projectId: 'small-business-bestie-5b2b1');
+      apiKey: 'AIzaSyBSNtQD2B2nWugiQtbx9b3OSvmqmckq5hw',
+      appId: '1:704528776001:ios:29d7d46c788447e1f63fc0',
+      messagingSenderId: '704528776001',
+      projectId: 'small-business-bestie-app');
 }
