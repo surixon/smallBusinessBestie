@@ -109,7 +109,7 @@ class HomeProvider extends BaseProvider {
       await Future.forEach(value.docs, (element) {
         MaterialModel materialModel =
             MaterialModel.fromSnapshot(element.data());
-        totalInventory = totalInventory + double.parse(materialModel.cost!);
+        totalInventory = totalInventory + double.parse(materialModel.stockValue!);
       });
     });
 

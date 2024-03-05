@@ -58,7 +58,7 @@ class AddMaterialProvider extends BaseProvider {
     model.stockStatus = stockStatus;
     model.stockStatusString = stockStatusString;
     model.cost = costController.text;
-    model.createdAt= Timestamp.now();
+    model.createdAt = Timestamp.now();
 
     if (materialModel != null) {
       await Globals.materialsReference
@@ -113,8 +113,9 @@ class AddMaterialProvider extends BaseProvider {
       stockValue = '';
     } else if (quantityInStockController.text.isNotEmpty &&
         costController.text.isNotEmpty) {
-      stockValue =
-          "${double.parse(quantityInStockController.text) * double.parse(costController.text)}";
+      stockValue = (double.parse(quantityInStockController.text) *
+              double.parse(costController.text))
+          .toStringAsFixed(2);
     }
   }
 
@@ -128,7 +129,7 @@ class AddMaterialProvider extends BaseProvider {
 
       if (model.inSoldQty != null && model.inSoldQty != 0) {
         inSold = (double.parse(model.cost ?? '0') * (model.inSoldQty ?? 0.0))
-            .toString();
+            .toStringAsFixed(2);
       }
 
       getStockStatus();

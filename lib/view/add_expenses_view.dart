@@ -135,13 +135,6 @@ class AddExpensesViewState extends State<AddExpensesView> {
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.sentences,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'required'.tr();
-                    } else {
-                      return null;
-                    }
-                  },
                   style:
                       ViewDecoration.textStyleMediumPoppins(kBlackColor, 16.sp),
                   decoration: ViewDecoration.textFiledDecoration(

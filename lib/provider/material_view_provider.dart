@@ -18,7 +18,7 @@ class MaterialViewProvider extends BaseProvider {
     String inSold = '';
     if (model.inSoldQty != null && model.inSoldQty != 0) {
       inSold =
-          "${(double.parse(model.cost ?? '0') * (model.inSoldQty ?? 0.0))} USD";
+          "${(double.parse(model.cost ?? '0') * (model.inSoldQty ?? 0.0)).toStringAsFixed(2)} USD";
     }
 
     return inSold;
