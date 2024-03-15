@@ -1,11 +1,8 @@
 import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../enums/viewstate.dart';
 import '../globals.dart';
 import '../helpers/dialog_helper.dart';

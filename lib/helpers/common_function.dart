@@ -1,13 +1,19 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:smalll_business_bestie/constants/colors_constants.dart';
+import 'package:smalll_business_bestie/routes.dart';
 import 'package:smalll_business_bestie/widgets/image_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/image_constants.dart';
+import '../constants/string_constants.dart';
+import '../globals.dart';
+import '../models/app_data_singleton_model.dart';
 import 'decoration.dart';
 
 class CommonFunction {
@@ -94,22 +100,30 @@ class CommonFunction {
       actions: [
         showAdd
             ? GestureDetector(
-          onTap: onAddPress,
-              child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                  child:  ImageView(path: addIcon,width: 32.w,height: 32.w,),
+                onTap: onAddPress,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                  child: ImageView(
+                    path: addIcon,
+                    width: 32.w,
+                    height: 32.w,
+                  ),
                 ),
-            )
+              )
             : const SizedBox(),
-
         showSetting
             ? GestureDetector(
-          onTap: onSettingPress,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            child:  Icon(Icons.settings,size: 32.w,),
-          ),
-        )
+                onTap: onSettingPress,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                  child: Icon(
+                    Icons.settings,
+                    size: 32.w,
+                  ),
+                ),
+              )
             : const SizedBox()
       ],
     );
@@ -124,5 +138,28 @@ class CommonFunction {
 
   static String getDateFromTimeStamp(DateTime date, String format) {
     return DateFormat(format, 'en').format(date).toString();
+  }
+
+  static Future<void> checkSubscription(BuildContext context) async {
+    try {
+      await Purchases.getCustomerInfo().then((customerInfo) {
+        if (customerInfo.entitlements.all[kPremium] != null &&
+            customerInfo.entitlements.all[kPremium]!.isActive) {
+          appData.entitlementIsActive = true;
+        } else {
+          appData.entitlementIsActive = false;
+        }
+      }).then((value) async {
+        await updateSubscription();
+      });
+    } on PlatformException catch (e) {
+      // Error fetching purchaser info
+      debugPrint("Error fetching purchaser info ${e.message}");
+    }
+  }
+
+  static Future<void> updateSubscription() async {
+    Map<String, dynamic> data = {'subscription': appData.entitlementIsActive};
+    await Globals.userReference.doc(Globals.firebaseUser?.uid).update(data);
   }
 }

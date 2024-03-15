@@ -13,7 +13,12 @@ import '../helpers/shared_pref.dart';
 import '../routes.dart';
 
 class SettingsProvider extends BaseProvider {
-  List<String> list = ['Clear Data', 'Delete Account', 'Logout'];
+  List<String> list = [
+    'Subscription',
+    'Clear Data',
+    'Delete Account',
+    'Logout'
+  ];
 
   void logout(BuildContext context) {
     DialogHelper.showDialogWithTwoButtons(

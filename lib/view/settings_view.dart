@@ -7,6 +7,7 @@ import 'package:smalll_business_bestie/enums/viewstate.dart';
 import 'package:smalll_business_bestie/helpers/common_function.dart';
 import 'package:smalll_business_bestie/helpers/decoration.dart';
 import 'package:smalll_business_bestie/provider/settings_provider.dart';
+import 'package:smalll_business_bestie/routes.dart';
 import 'package:smalll_business_bestie/view/base_view.dart';
 
 class SettingsView extends StatefulWidget {
@@ -51,14 +52,18 @@ class SettingsViewState extends State<SettingsView> {
       onTap: () {
         switch (index) {
           case 0:
-            provider.clearData(context);
+            context.pushNamed(AppPaths.subscription);
             break;
 
           case 1:
-            provider.showDelete(context);
+            provider.clearData(context);
             break;
 
           case 2:
+            provider.showDelete(context);
+            break;
+
+          case 3:
             provider.logout(context);
             break;
         }

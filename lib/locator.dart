@@ -14,6 +14,7 @@ import 'package:smalll_business_bestie/provider/login_provider.dart';
 import 'package:smalll_business_bestie/provider/material_view_provider.dart';
 import 'package:smalll_business_bestie/provider/products_view_provider.dart';
 import 'package:smalll_business_bestie/provider/settings_provider.dart';
+import 'package:smalll_business_bestie/provider/subscription_provider.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -33,4 +34,5 @@ void setupLocator() {
   locator.registerFactory(() => ProductsViewProvider());
   locator.registerFactory(() => SettingsProvider());
   locator.registerFactory(() => AccountReInStateProvider());
+  locator.registerFactory(() => SubscriptionProvider());
 }

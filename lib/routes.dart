@@ -13,6 +13,7 @@ import 'package:smalll_business_bestie/view/login_view.dart';
 import 'package:smalll_business_bestie/view/inventory_view.dart';
 import 'package:smalll_business_bestie/view/settings_view.dart';
 import 'package:smalll_business_bestie/view/splash_view.dart';
+import 'package:smalll_business_bestie/view/subscription_view.dart';
 import 'globals.dart';
 import 'helpers/shared_pref.dart';
 
@@ -39,6 +40,14 @@ final router = GoRouter(
       name: AppPaths.forgotPassword,
       pageBuilder: (context, state) {
         return const MaterialPage(child: ForgotPasswordView());
+      },
+    ),
+    GoRoute(
+      path: AppPaths.subscription,
+      name: AppPaths.subscription,
+      pageBuilder: (context, state) {
+        Map<String,dynamic>? data = state.extra as Map<String,dynamic>?;
+        return  MaterialPage(child: SubscriptionView(isBackDisabled: data?['disableBack'],));
       },
     ),
     GoRoute(
@@ -90,7 +99,7 @@ final router = GoRouter(
       path: AppPaths.settings,
       name: AppPaths.settings,
       pageBuilder: (context, state) {
-        return MaterialPage(child: SettingsView());
+        return const MaterialPage(child: SettingsView());
       },
     ),
     GoRoute(
@@ -132,4 +141,5 @@ class AppPaths {
   static const addIncome = '/addIncome';
   static const addExpense = '/addExpense';
   static const settings = '/settings';
+  static const subscription = '/subscription';
 }
