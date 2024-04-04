@@ -3,13 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:smalll_business_bestie/constants/colors_constants.dart';
-import 'package:smalll_business_bestie/routes.dart';
 import 'package:smalll_business_bestie/widgets/image_view.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../constants/image_constants.dart';
 import '../constants/string_constants.dart';
 import '../globals.dart';
@@ -71,6 +68,7 @@ class CommonFunction {
     BuildContext context, {
     bool showBack = false,
     bool showAdd = false,
+    bool showClose = false,
     bool showSetting = false,
     VoidCallback? onBackPress,
     VoidCallback? onAddPress,
@@ -91,7 +89,19 @@ class CommonFunction {
                 ),
               ),
             )
-          : Container(),
+          : showClose
+              ? GestureDetector(
+                  onTap: onBackPress,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 12.h, bottom: 12.h),
+                    child: const Icon(
+                      Icons.close,
+                      size: 20,
+                      color: kWhiteColor,
+                    ),
+                  ),
+                )
+              : Container(),
       title: Text(
         title,
         style: ViewDecoration.textStyleBoldPoppins(kWhiteColor, 24.sp),

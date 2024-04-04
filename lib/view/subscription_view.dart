@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -6,9 +6,12 @@ import '../constants/colors_constants.dart';
 import '../constants/image_constants.dart';
 import '../constants/string_constants.dart';
 import '../enums/viewstate.dart';
+import '../globals.dart';
 import '../helpers/common_function.dart';
 import '../helpers/decoration.dart';
+import '../helpers/shared_pref.dart';
 import '../provider/subscription_provider.dart';
+import '../routes.dart';
 import '../widgets/image_view.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/round_corner_shape.dart';
@@ -30,9 +33,16 @@ class SubscriptionView extends StatelessWidget {
               child: Scaffold(
                 extendBodyBehindAppBar: true,
                 appBar: CommonFunction.appBarWithButtons(
-                    'Subscription', context, showBack: isBackDisabled == null,
-                    onBackPress: () {
-                  context.pop();
+                    'Subscription', context,
+                    showClose: isBackDisabled != null,
+                    showBack: isBackDisabled == null, onBackPress: () {
+                  if (isBackDisabled == null) {
+                    context.pop();
+                  } else {
+                    Globals.auth.signOut();
+                    SharedPref.prefs?.clear();
+                    context.go(AppPaths.login);
+                  }
                 }),
                 body: Container(
                   child: provider.loader
@@ -68,7 +78,8 @@ class SubscriptionView extends StatelessWidget {
                                         EdgeInsets.symmetric(horizontal: 24.w),
                                     child: Column(
                                       children: [
-                                        featureItem('Unlimited access'),
+                                        featureItem(
+                                            'With your subscription you get access to the entire app free for first 3 days. After the 3 days it will charge the monthly at ${provider.packageList.firstWhere((element) => element.packageType.name == 'monthly').storeProduct.priceString} or annually at ${provider.packageList.firstWhere((element) => element.packageType.name == 'annual').storeProduct.priceString}. You are free to cancel at any time.'),
                                         SizedBox(
                                           height: 24.h,
                                         ),
@@ -248,17 +259,65 @@ class SubscriptionView extends StatelessWidget {
                                           height: 4.h,
                                         ),
                                         GestureDetector(
-                                          onTap: () {
-                                            CommonFunction.openUrl(privacyUrl);
-                                          },
-                                          child: Text(
-                                            "After the free trial ends, your store account will be charged. You may cancel at any time during the term.You agree to the Terms of Use and Privacy Policy.",
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                ViewDecoration.textStyleRegular(
-                                                    kBlackColor, 11.sp),
-                                          ),
-                                        ),
+                                            onTap: () {
+                                              CommonFunction.openUrl(
+                                                  privacyUrl);
+                                            },
+                                            child: RichText(
+                                                textAlign: TextAlign.center,
+                                                text: TextSpan(children: [
+                                                  TextSpan(
+                                                      text:
+                                                          "After the free trial ends, your store account will be charged. You may cancel at any time during the term.You agree to the ",
+                                                      style: ViewDecoration
+                                                          .textStyleRegular(
+                                                              kBlackColor,
+                                                              11.sp),
+                                                      children: [
+                                                        TextSpan(
+                                                            recognizer:
+                                                                TapGestureRecognizer()
+                                                                  ..onTap = () {
+                                                                    CommonFunction
+                                                                        .openUrl(
+                                                                            termOfUseUrl);
+                                                                  },
+                                                            text:
+                                                                'Terms of Use',
+                                                            style: ViewDecoration
+                                                                .textStyleRegular(
+                                                                    Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                    11.sp,
+                                                                    true),
+                                                            children: [
+                                                              TextSpan(
+                                                                  text: " and ",
+                                                                  style: ViewDecoration
+                                                                      .textStyleRegular(
+                                                                          kBlackColor,
+                                                                          11.sp),
+                                                                  children: [
+                                                                    TextSpan(
+                                                                      recognizer:
+                                                                          TapGestureRecognizer()
+                                                                            ..onTap =
+                                                                                () {
+                                                                              CommonFunction.openUrl(privacyUrl);
+                                                                            },
+                                                                      text:
+                                                                          "Privacy Policy.",
+                                                                      style: ViewDecoration.textStyleRegular(
+                                                                          Theme.of(context)
+                                                                              .primaryColor,
+                                                                          11.sp,
+                                                                          true),
+                                                                    ),
+                                                                  ]),
+                                                            ]),
+                                                      ]),
+                                                ]))),
                                         SizedBox(
                                           height: 16.h,
                                         ),
@@ -283,23 +342,9 @@ class SubscriptionView extends StatelessWidget {
   }
 
   featureItem(String title) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ImageView(
-          path: tick,
-          width: 16.w,
-        ),
-        SizedBox(
-          width: 8.w,
-        ),
-        Expanded(
-          child: Text(
-            title,
-            style: ViewDecoration.textStyleMedium(kBlackColor, 16.sp),
-          ),
-        )
-      ],
+    return Text(
+      title,
+      style: ViewDecoration.textStyleMedium(kBlackColor, 16.sp),
     );
   }
 }
